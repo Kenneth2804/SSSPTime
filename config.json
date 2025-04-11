@@ -1,0 +1,6 @@
+{
+    "serverURL": "nocus.samsungcms.com",
+    "tlsPort": 7002,
+    "useTLs": true,
+    "expeccctedTimezone": "Greenwich Mean Time (GMT)"
+}
