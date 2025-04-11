@@ -6,7 +6,7 @@
         viewmodes="fullscreen">
    <tizen:application 
         id="org.timefixer.timesync" 
-        package="timesync" 
+        package="timefixer" 
         required_version="2.4" 
         auto-relauch="true"/>
 <content src="index.html"/>
