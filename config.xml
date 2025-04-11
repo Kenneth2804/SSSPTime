@@ -3,13 +3,21 @@
         xmlns:tizen="http://tizen.org/ns/widgets"
         id="http://yourdomain/SSSPTimeFixer"
         version="1.0.0"
-        viewmodes="fullscreen"
-        height="720"
-        width="1280">
-    <tizen:application id="SSSPTimeFixer" package="com.yourdomain.sssptimefixer" required_version="2.4"/>
-    <content src="index.html"/>
-    <icon src="icon.png"/>
-    <name>SSSP Time Fixer</name>
-    <tizen:privilege name="http://tizen.org/privilege/time.set"/>
-    <tizen:privilege name="http://tizen.org/privilege/internet"/>
+        viewmodes="fullscreen">
+   <tizen:application 
+        id="org.timefixer.timesync" 
+        package="timefixer" 
+        required_version="2.4" 
+        auto-relauch="true"/>
+<content src="index.html"/>
+<icon src="icong.png" />
+<name>SSSP Time Fixer</name>
+<description>App time set</description>
+<author href="" email="">Joab Quiroz</author>
+<tizen:privilege name="http://tizen.org/privilege/tizen.system"/>
+<tizen:setting screen-orientation="portrait"
+    context-menu="disable"
+    background-support="enable"
+    encryption="disable"
+    install-location="internal-only"/>
 </widget>
