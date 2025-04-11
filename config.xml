@@ -4,8 +4,9 @@
         id="http://yourdomain/SSSPTimeFixer"
         version="1.0.0"
         viewmodes="fullscreen">
-   <tizen:application id="org.example.timesyncapp" 
-        package="tinesyncapp" 
+   <tizen:application 
+        id="org.timefixer.timesync" 
+        package="timesync" 
         required_version="2.4" 
         auto-relauch="true"/>
 <content src="index.html"/>
