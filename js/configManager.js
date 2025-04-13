@@ -1,32 +1,23 @@
-const ConfigManager = (funtion ()
-    {
-        const CONFIG_KEY = "appConfig";
-        let config = null;
-
-        async function loadConfig() {
-            const stored = localStorage.getItem(CONFIG_KEY);
-            if (stored) {
-                config = JSON.parse(stored);
-            } else {
-                const response = await 
-                fetch("config.json");
-                config = await
-                responde.json();
-                config.installedAt = newDate().toISOString();
-                config.useTLS = true;
-
-                localStorage.setItem(CONFIG_KEY, JSON.stringify(config));
-
+window.ConfigManager = {
+  loadConfig: function () {
+    return new Promise(function (resolve, reject) {
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "config.json", true);
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            try {
+              var config = JSON.parse(xhr.responseText);
+              resolve(config);
+            } catch (e) {
+              reject("Error al parsear config.json");
             }
-            return config;
+          } else {
+            reject("No se pudo obtener config.json");
+          }
         }
-
-        function getConfig() {
-            return config;
-        }
-        return{
-            loadConfig, getConfig
-        };
-
-    }
-)
+      };
+      xhr.send();
+    });
+  }
+};

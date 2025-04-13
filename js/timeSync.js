@@ -1,46 +1,49 @@
-const timeSync = {
-    init: function (config, onStatus) {
-        function checkAndFixTime() {
-            const currentTime = new
-        
-        Date();
+window.TimeSync = {
+  init: function (config, onStatus) {
+    var lat = config.lat;
+    var lng = config.lng;
+    var geonamesUser = config.geonamesUser;
+    var apiUrl = "https://secure.geonames.org/timezoneJSON?lat=" + lat + "&lng=" + lng + "&username=" + geonamesUser;
 
-        fetch(config.serverURL = "/api/getTime")
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", apiUrl, true);
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          try {
+            var data = JSON.parse(xhr.responseText);
+            if (!data.time || !data.gmtOffset) {
+              throw new Error("Datos inválidos desde GeoNames");
+            }
 
-        .then(response => response.json())
-        .then(data => {
-            const serverTime = new Date(data.currentTime);
-            const difference = Math.abs(serverTime - currentTime);
-        
-            if (difference > 15000)
+            var serverTime = new Date(data.time);
+            var currentTime = new Date();
+            var difference = Math.abs(serverTime.getTime() - currentTime.getTime());
 
-                try {
-                 
-                    tizen.time.setCurrentDateTime(serverTime);
-                    
-                    console.log("time set successfully");
-                    if (onStatus)
-                    
-                        onStatus ("Time set successfully");
+            if (difference > 15000) {
+              try {
+                tizen.time.setCurrentDateTime(serverTime);
+                console.log("Hora ajustada con éxito.");
+                if (onStatus) { onStatus("Hora ajustada con éxito"); }
+              } catch (e) {
+                console.error("Error al ajustar la hora:", e);
+                if (onStatus) { onStatus("Error al ajustar la hora"); }
+              }
+            } else {
+              console.log("La hora ya está sincronizada.");
+              if (onStatus) { onStatus("La hora ya está sincronizada"); }
+            }
 
-                
-                } catch(e){
-                    console.error("error to set the time", e);
-
-                    if (onStatus)
-                        onStatus("error to set the time");
-                } else {
-                    console.log("Time already set up");
-                    if (onStatus) onStatus("Time already set up");
-                }
-        })
-        .catch(err => {
-            console.erro("consult time error", err);
-            if (onStatus)
-                onStatus("consult time error");
-        });
-
+          } catch (err) {
+            console.error("Error al procesar la respuesta:", err);
+            if (onStatus) { onStatus("Error al procesar respuesta"); }
+          }
+        } else {
+          console.error("Error al consultar GeoNames:", xhr.status);
+          if (onStatus) { onStatus("Error al consultar GeoNames"); }
         }
-        checkAndFixTime();
-    }
+      }
+    };
+    xhr.send();
+  }
 };

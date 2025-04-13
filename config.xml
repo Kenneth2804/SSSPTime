@@ -1,23 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<widget xmlns="http://www.w3.org/ns/widgets"
-        xmlns:tizen="http://tizen.org/ns/widgets"
-        id="http://yourdomain/SSSPTimeFixer"
-        version="1.0.0"
-        viewmodes="fullscreen">
-   <tizen:application 
-        id="org.timefixer.timesync" 
-        package="timefixer" 
-        required_version="2.4" 
-        auto-relauch="true"/>
-<content src="index.html"/>
-<icon src="icong.png" />
-<name>SSSP Time Fixer</name>
-<description>App time set</description>
-<author href="" email="">Joab Quiroz</author>
-<tizen:privilege name="http://tizen.org/privilege/tizen.system"/>
-<tizen:setting screen-orientation="portrait"
-    context-menu="disable"
-    background-support="enable"
-    encryption="disable"
-    install-location="internal-only"/>
+<widget xmlns="http://www.w3.org/ns/widgets" id="http://yourdomain/sssp-timefixer" version="1.0.0" viewmodes="fullscreen">
+  <tizen:application id="org.tizen.timefixer" package="timefixer" required_version="2.4"/>
+  <content src="index.html"/>
+  <name>SSSP Time Fixer</name>
+  <description>Corrige la hora automáticamente en pantallas Tizen</description>
+  <icon src="icon.png"/>
+  <tizen:setting screen-orientation="landscape" context-menu="disable" background-support="disable" encryption="disable" install-location="internal-only" auto-relaunch="true" hwkey-event="enable"/>
+
+  <!-- Permisos -->
+  <tizen:privilege name="http://tizen.org/privilege/internet"/>
+  <tizen:privilege name="http://tizen.org/privilege/time.set"/>
+  <tizen:privilege name="http://tizen.org/privilege/application.launch"/>
+
 </widget>

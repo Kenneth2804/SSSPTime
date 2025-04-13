@@ -1,31 +1,67 @@
-document.addEventListener("DOMContentLoaded", function () {
-    checkAndFixTime();
+/* global ConfigManager, TimeSync */
 
+document.addEventListener("DOMContentLoaded", function () {
     document.addEventListener("visibilitychange", function () {
         if (!document.hidden) {
             checkAndFixTime();
         }
     });
+
+    checkAndFixTime();
 });
 
 function checkAndFixTime() {
-    const currentTime = new Date();
-    fetch("https://el server aqui joab /api/getTime")
-        .then(response => response.json())
-        .then(data => {
-            const serverTime = new Date(data.currentTime);
-            const difference = Math.abs(serverTime - currentTime);
+    var message = document.getElementById("message");
 
-            if (difference > 60000) {
-                try {
-                    tizen.time.setCurrentDateTime(serverTime);
-                    console.log("Hora ajustada con éxito.");
-                } catch (e) {
-                    console.error("Error al ajustar la hora:", e);
-                }
-            } else {
-                console.log("La hora está correcta.");
-            }
+    ConfigManager.loadConfig()
+        .then(function (config) {
+            TimeSync.init(config, function (statusText) {
+                message.textContent = statusText;
+
+                setTimeout(function () {
+                    try {
+                        tizen.application.getCurrentApplication().exit();
+                    } catch (e) {
+                        console.error("No se pudo cerrar la app:", e);
+                    }
+                }, 5000);
+            });
         })
-        .catch(err => console.error("Error al consultar hora:", err));
+        .catch(function (err) {
+            console.error("Error al sincronizar:", err);
+            message.textContent = "Error al sincronizar";
+        });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) {
+      checkAndFixTime();
+    }
+  });
+
+  checkAndFixTime();
+});
+
+function checkAndFixTime() {
+  const message = document.getElementById("message");
+
+  ConfigManager.loadConfig()
+    .then(function (config) {
+      TimeSync.init(config, function (statusText) {
+        message.textContent = statusText;
+
+        setTimeout(function () {
+          try {
+            tizen.application.getCurrentApplication().exit();
+          } catch (e) {
+            console.error("No se pudo cerrar la app:", e);
+          }
+        }, 5000);
+      });
+    })
+    .catch(function (err) {
+      console.error("Error al sincronizar:", err);
+      message.textContent = "Error al sincronizar";
+    });
 }
